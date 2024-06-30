@@ -12,33 +12,20 @@ struct cabecera
     int cant_ingreso;
 } head[100];
 
-void cargar_productos()
+void menu_registro()
 {
-    char archivo[] = "/Users/anapaulalopez/Documents/output/programacion/prom.txt";
-    fd = fopen(archivo, "r");
-    if (fd == NULL)
-    {
-        // printf("Todavia no se ha creado un archivo...\n");
-        return;
-    }
-    
-    fscanf(fd, "%*[^\n]\n");
-    fscanf(fd, "%*[^\n]\n");
-    fscanf(fd, "%*[^\n]\n");
-
-    
-    while (fscanf(fd, "%*d\t\t%s\t\t%s\t\t\t%f\t\t\t%d\n", head[cont].codigo, head[cont].descripcion, &head[cont].precio, &head[cont].cant_ingreso) == 4)
-    {
-        cont++;
-    }
-
-    fclose(fd);
+    printf("\e[34m\n\n------- MENU DE REGISTRO DE INVENTARIO -------\e[0m\n");
+    printf("[1] Crear Producto \n");
+    printf("[2] Agregar Productos al Inventario\n");
+    printf("[3] Mostrar Productos del Inventario\n");
+    printf("[4] Eliminar Producto del inventario\n");
+    printf("[5] Salir\n");
 }
 
 void crear_producto()
 {
     char archivo[] = "/Users/anapaulalopez/Documents/output/programacion/prom.txt";
-    int rpt, j;
+    int rpt, i, j;
     fd = fopen(archivo, "w");
     if (fd == NULL)
     {
@@ -60,9 +47,19 @@ void crear_producto()
 
     do
     {
+    OA:
         fflush(stdin);
         printf("\n\nCodigo: ");
         gets(head[cont].codigo);
+        for (i = 0; i < cont; i++)
+        {
+            if (strcmp(head[i].codigo, head[cont].codigo) == 0)
+            {
+                printf("\e[1;33mEl codigo ya existe en el inventario. Intente con un codigo diferente.\e[0m\n");
+                goto OA;
+            }
+        }
+
         printf("\nDescripcion: ");
         gets(head[cont].descripcion);
         do
@@ -95,12 +92,13 @@ void crear_producto()
 
     } while (rpt == 1);
     fclose(fd);
+    
 }
 
 void agregar_producto()
 {
     char archivo[] = "/Users/anapaulalopez/Documents/output/programacion/prom.txt";
-    int rpt;
+    int i, rpt;
     fd = fopen(archivo, "a");
     if (fd == NULL)
     {
@@ -110,9 +108,20 @@ void agregar_producto()
     printf("\t::::::Agregando Productos:::::\n");
     do
     {
+    AE:
         fflush(stdin);
         printf("\n\nCodigo: ");
         gets(head[cont].codigo);
+
+        for (i = 0; i < cont; i++)
+        {
+            if (strcmp(head[i].codigo, head[cont].codigo) == 0)
+            {
+                printf("\e[1;33mEl codigo ya existe en el inventario. Intente con un codigo diferente.\e[0m\n");
+                goto AE;
+            }
+        }
+
         printf("\nDescripcion: ");
         gets(head[cont].descripcion);
         do
@@ -147,6 +156,44 @@ void agregar_producto()
     fclose(fd);
 }
 
+void mostrar_productos()
+{
+    int c;
+    char archivo[] = "/Users/anapaulalopez/Documents/output/programacion/prom.txt";
+    fd = fopen(archivo, "r");
+
+    if (fd == NULL)
+    {
+        printf("\e[1;33mERROR!!, el archivo no existe todavia, para ello primero debe CREAR un producto...!!!\e[0m\n");
+        return;
+    }
+    else
+    {
+        if (cont == 0)
+        {
+            printf("\e[1;33mNo tiene inventario para mostrar, recuerde crear un producto primero...\e[0m\n");
+            return;
+        }
+        else
+        {
+            while ((c = fgetc(fd)) != EOF)
+            {
+                if (c == '\n')
+                {
+                    printf("\n");
+                }
+                else
+                {
+                    putchar(c);
+                }
+            }
+        }
+    }
+
+    fclose(fd);
+}
+
+
 void eliminar_producto()
 {
     char archivo[] = "/Users/anapaulalopez/Documents/output/programacion/prom.txt";
@@ -167,30 +214,30 @@ void eliminar_producto()
         }
         else
         {
-            for (j = 0; j < 100; j++)
-            {
-                printf("-");
-            }
-            printf("\n");
-            printf("INDICE\t\tCODIGO\t\tDESCRIPCION\t\tPRECIO UNITARIO\t\tCANTIDAD\n");
-            for (j = 0; j < 100; j++)
-            {
-                printf("-");
-            }
-            printf("\n");
+            // for (j = 0; j < 100; j++)
+            // {
+            //     printf("-");
+            // }
+            // printf("\n");
+            // printf("INDICE\t\tCODIGO\t\tDESCRIPCION\t\tPRECIO UNITARIO\t\tCANTIDAD\n");
+            // for (j = 0; j < 100; j++)
+            // {
+            //     printf("-");
+            // }
+            // printf("\n");
 
-            for (i = 0; i < cont; i++)
-            {
-                printf("%d\t\t%s\t\t%s\t\t\t%.2f\t\t\t%d\n", i + 1, head[i].codigo, head[i].descripcion, head[i].precio, head[i].cant_ingreso);
-            }
-            printf("\n\n");
+            // for (i = 0; i < cont; i++)
+            // {
+            //     printf("%d\t\t%s\t\t%s\t\t\t%.2f\t\t\t%d\n", i + 1, head[i].codigo, head[i].descripcion, head[i].precio, head[i].cant_ingreso);
+            // }
+            // printf("\n\n");
         OA:
             printf("Ingrese el indice del producto que desea eliminar: ");
             scanf("%d", &indice_eliminar);
 
             if (indice_eliminar < 1 || indice_eliminar > cont)
             {
-                printf("\e[1;31mProducto con codigo '%d' no encontrado en el inventario.\e[0m\n", indice_eliminar);
+                printf("\e[1;31mProducto con indice '%d' no encontrado en el inventario.\e[0m\n", indice_eliminar);
                 goto OA;
             }
 
@@ -228,48 +275,23 @@ void eliminar_producto()
     fclose(fd);
 }
 
-void menu_registro()
+void cargar_productos()
 {
-    printf("\e[34m\n\n------- MENU DE REGISTRO DE INVENTARIO -------\e[0m\n");
-    printf("[1] Crear Producto \n");
-    printf("[2] Agregar Productos al Inventario\n");
-    printf("[3] Mostrar Productos del Inventario\n");
-    printf("[4] Eliminar Producto del inventario\n");
-    printf("[5] Salir\n");
-}
-
-void mostrar_productos()
-{
-    int c;
     char archivo[] = "/Users/anapaulalopez/Documents/output/programacion/prom.txt";
     fd = fopen(archivo, "r");
-
     if (fd == NULL)
     {
-        printf("\e[1;33mERROR!!, el archivo no existe todavia, para ello primero debe CREAR un producto...!!!\e[0m\n");
+        // printf("Todavia no se ha creado un archivo...\n");
         return;
     }
-    else
+   
+    fscanf(fd, "%*[^\n]\n");
+    fscanf(fd, "%*[^\n]\n");
+    fscanf(fd, "%*[^\n]\n");
+
+    while (fscanf(fd, "%*d\t\t%s\t\t%s\t\t\t%f\t\t\t%d\n", head[cont].codigo, head[cont].descripcion, &head[cont].precio, &head[cont].cant_ingreso) == 4)
     {
-        if (cont == 0)
-        {
-            printf("\e[1;33mNo tiene inventario para mostrar, recuerde crear un producto primero...\e[0m\n");
-            return;
-        }
-        else
-        {
-            while ((c = fgetc(fd)) != EOF)
-            {
-                if (c == '\n')
-                {
-                    printf("\n");
-                }
-                else
-                {
-                    putchar(c);
-                }
-            }
-        }
+        cont++;
     }
 
     fclose(fd);
