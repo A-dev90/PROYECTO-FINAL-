@@ -92,7 +92,6 @@ void crear_producto()
 
     } while (rpt == 1);
     fclose(fd);
-    
 }
 
 void agregar_producto()
@@ -193,7 +192,6 @@ void mostrar_productos()
     fclose(fd);
 }
 
-
 void eliminar_producto()
 {
     char archivo[] = "/Users/anapaulalopez/Documents/output/programacion/prom.txt";
@@ -214,23 +212,23 @@ void eliminar_producto()
         }
         else
         {
-            // for (j = 0; j < 100; j++)
-            // {
-            //     printf("-");
-            // }
-            // printf("\n");
-            // printf("INDICE\t\tCODIGO\t\tDESCRIPCION\t\tPRECIO UNITARIO\t\tCANTIDAD\n");
-            // for (j = 0; j < 100; j++)
-            // {
-            //     printf("-");
-            // }
-            // printf("\n");
+            for (j = 0; j < 100; j++)
+            {
+                printf("-");
+            }
+            printf("\n");
+            printf("INDICE\t\tCODIGO\t\tDESCRIPCION\t\tPRECIO UNITARIO\t\tCANTIDAD\n");
+            for (j = 0; j < 100; j++)
+            {
+                printf("-");
+            }
+            printf("\n");
 
-            // for (i = 0; i < cont; i++)
-            // {
-            //     printf("%d\t\t%s\t\t%s\t\t\t%.2f\t\t\t%d\n", i + 1, head[i].codigo, head[i].descripcion, head[i].precio, head[i].cant_ingreso);
-            // }
-            // printf("\n\n");
+            for (i = 0; i < cont; i++)
+            {
+                printf("%d\t\t%s\t\t%s\t\t\t%.2f\t\t\t%d\n", i + 1, head[i].codigo, head[i].descripcion, head[i].precio, head[i].cant_ingreso);
+            }
+            printf("\n\n");
         OA:
             printf("Ingrese el indice del producto que desea eliminar: ");
             scanf("%d", &indice_eliminar);
@@ -284,12 +282,13 @@ void cargar_productos()
         // printf("Todavia no se ha creado un archivo...\n");
         return;
     }
-   
+    // Saltar las dos primeras líneas de encabezado y guiones
     fscanf(fd, "%*[^\n]\n");
     fscanf(fd, "%*[^\n]\n");
     fscanf(fd, "%*[^\n]\n");
 
-    while (fscanf(fd, "%*d\t\t%s\t\t%s\t\t\t%f\t\t\t%d\n", head[cont].codigo, head[cont].descripcion, &head[cont].precio, &head[cont].cant_ingreso) == 4)
+    // Leer cada producto del archivo
+    while (fscanf(fd, "%*d\t\t%s\t\t%s\t\t\t%f\t\t\t%d\n", head[cont].codigo, head[cont].descripcion, &head[cont].precio, &head[cont].cant_ingreso) != EOF)
     {
         cont++;
     }
