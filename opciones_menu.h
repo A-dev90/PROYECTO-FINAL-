@@ -282,12 +282,10 @@ void cargar_productos()
         // printf("Todavia no se ha creado un archivo...\n");
         return;
     }
-    // Saltar las dos primeras líneas de encabezado y guiones
     fscanf(fd, "%*[^\n]\n");
     fscanf(fd, "%*[^\n]\n");
     fscanf(fd, "%*[^\n]\n");
 
-    // Leer cada producto del archivo
     while (fscanf(fd, "%*d\t\t%s\t\t%s\t\t\t%f\t\t\t%d\n", head[cont].codigo, head[cont].descripcion, &head[cont].precio, &head[cont].cant_ingreso) != EOF)
     {
         cont++;
